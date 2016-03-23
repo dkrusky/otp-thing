@@ -15,6 +15,9 @@ otp::SetSecret($user, $secret);
 $qr = otp::GenerateQRCode();
 echo '<img src="' . $qr['image'] . '">';
 
+// get current timeblock and code
+$code = otp::GetCode();
+
 // display all aparameters
 $row = '<tr><td>%s</td><td><input type="text" value="%s"></td></tr>';
 $table = '<table><tr><td><b>Field</b></td><td><b>Value</b></td></tr>%s</table>';
@@ -25,7 +28,7 @@ $o .= sprintf($row, 'Secret', $secret);
 $o .= sprintf($row, 'Issuer', otp::$company);
 $o .= sprintf($row, 'Digits', otp::$digits);
 $o .= sprintf($row, 'Period', otp::$period);
-$o .= sprintf($row, 'Algorithm', $algorithm);
+//$o .= sprintf($row, 'Algorithm', $algorithm); // not implemented yet
 $o .= sprintf($row, 'Current', $code->timeblock);
 $o .= sprintf($row, 'OTP', $code->code);
 echo '<br>' . sprintf($table, $o);
