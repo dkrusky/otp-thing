@@ -13,7 +13,8 @@ class otp {
 	public static $company = 'ACME';
 	public static $digits = 6;
 	public static $period = 30;
-	private static $algorithm = 'sha1';
+	public static $totp = false;
+	public static $algorithm = 'sha1';
 
 	private static $secret;
 	private static $user;
@@ -51,20 +52,36 @@ class otp {
 	// gets the current code for the current timeblock on the current secret
 	public static function GetCode() {
 		if(empty(self::$secret)) { throw new Exception('Missing required data'); }
-		$time = floor(microtime(true)/self::$period);
-		$hash = hash_hmac(
-			'sha1',
-			pack('N*', 0) . pack('N*', $time),
-			self::decode(),
-			true
-		);
-		$offset = ord($hash[19]) & 0xf;
+		self::$algorithm = strtolower(self::$algorithm);
+		if (!in_array(self::$algorithm, array('sha1', 'sha256', 'sha512'), true)) { throw new Exception('Invalid algorithm'); }
+		$time = bcdiv(time() , self::$period, 0);
+		if(self::$totp === true || self::$algorithm != 'sha1') {
+			// TOTP
+			$hash = hash_hmac(
+						self::$algorithm,
+						hex2bin(str_pad(base_convert($time, 10, 16),16,"0", STR_PAD_LEFT)),
+						self::decode(),
+						true
+					);
+			$offset = ord($hash[strlen($hash) - 1]) & 0xf;
+		} else {
+			// HOTP
+			//$time = floor(microtime(true)/self::$period);
+			$hash = hash_hmac(
+						'sha1',
+						pack('N*', 0) . pack('N*', $time),
+						self::decode(),
+						true
+					);
+			$offset = ord($hash[19]) & 0xf;
+		}
 		$OTP = (
 			((ord($hash[$offset+0]) & 0x7f) << 24 ) |
 			((ord($hash[$offset+1]) & 0xff) << 16 ) |
 			((ord($hash[$offset+2]) & 0xff) << 8 ) |
 			(ord($hash[$offset+3]) & 0xff)
 		) % pow(10, self::$digits);
+		
 		return (object)Array(
 			'timeblock' => $time,
 			'code' => str_pad($OTP, self::$digits, '0', STR_PAD_LEFT)
@@ -72,25 +89,16 @@ class otp {
 	}
 
 	/* validate code */
-	public static function ValidateCode($code) {
-		if(empty(self::$secret)) { throw new Exception('Missing required data'); }
-		$time = floor(microtime(true)/self::$period);
-		$hash = hash_hmac(
-			'sha1',
-			pack('N*', 0) . pack('N*', $time),
-			self::decode(),
-			true
-		);
-		$offset = ord($hash[19]) & 0xf;
-		$OTP = (
-			((ord($hash[$offset+0]) & 0x7f) << 24 ) |
-			((ord($hash[$offset+1]) & 0xff) << 16 ) |
-			((ord($hash[$offset+2]) & 0xff) << 8 ) |
-			(ord($hash[$offset+3]) & 0xff)
-		) % pow(10, self::$digits);
-
-		$validcode = str_pad($OTP, self::$digits, '0', STR_PAD_LEFT);
-		if($validcode === $code) {
+	public static function ValidateCode($code, $hashtype=null) {
+		// get valid code for current timeblock
+		$vcode = self::GetCode();
+		if($hashtype != null) {
+			// TODO :  add check for supported hash methods.
+			$hashtype = strtolower($hashtype);
+			$vcode->code = hash($hashtype, $vcode->code);
+		}
+		
+		if($code === $vcode->code) {
 			return true;
 			// recommended action on true is to use mark the current time
 			// and disallow this code from being used again for a lockout
