@@ -64,7 +64,7 @@ GenerateQRCode() - returns `array` [ *image* `string` { base64 encoded image str
 
 *Everything except GetTime() and ValidateCode() is inside the demo.php for a demonstration on how to use*
 
-## The dmeo project
+## The demo project
 
 `otp_standalone_demo.php`
 
