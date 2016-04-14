@@ -1,4 +1,5 @@
 <?php
+if(!defined('LIVE')) { exit(); };
 /*
 #
 # QRcode/OTP class library for PHP5
@@ -19,7 +20,7 @@ class otp {
 	private static $secret;
 	private static $user;
 
-	public static $qrcode_database				= "qrdata.db";
+	public static $qrcode_database				= "lib/qrdata.db";
 
 	static $qrcode_version						= 6;
 	static $qrcode_errorcorrect					= "L";
@@ -81,7 +82,7 @@ class otp {
 			((ord($hash[$offset+2]) & 0xff) << 8 ) |
 			(ord($hash[$offset+3]) & 0xff)
 		) % pow(10, self::$digits);
-		
+
 		return (object)Array(
 			'timeblock' => $time,
 			'code' => str_pad($OTP, self::$digits, '0', STR_PAD_LEFT)
@@ -93,11 +94,10 @@ class otp {
 		// get valid code for current timeblock
 		$vcode = self::GetCode();
 		if($hashtype != null) {
-			// TODO :  add check for supported hash methods.
 			$hashtype = strtolower($hashtype);
 			$vcode->code = hash($hashtype, $vcode->code);
 		}
-		
+
 		if($code === $vcode->code) {
 			return true;
 			// recommended action on true is to use mark the current time

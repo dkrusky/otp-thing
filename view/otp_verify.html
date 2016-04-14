@@ -1,0 +1,11 @@
+<a href="URLHOME?token=CSRFVALUE">Home</a> | <a href="URLHOME?page=otp&token=CSRFVALUE">Refresh</a><hr>
+<h2>Add Authenticator</h2>
+<form method="post">
+	<input type="hidden" name="csrf" value="CSRFVALUE">
+	<table>
+		<tr><td colspan="1" align="center"><img src="QRCODE"></td></tr>
+		<tr><td>Password</td><td><input name="password" type="password"></td></tr>
+		<tr><td>Auhenticator</td><td><input name="otp" type="password"></td></tr>
+		<tr><td colspan="1"><button type="submit">Verify &amp; Add</button></td></tr>
+	</table>
+</form>

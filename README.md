@@ -5,6 +5,8 @@ One time password generator, validator, and qrcode generator that has no web dep
 
 OTP-Thing is a drop in class that makes it easy to implement 2FA with all the bells and whistles. The current implementation supports QR code generation from versions 1 to 40, as well as the various parity levels and quiet zone adjustments. This class is self-contained with the exception that it does require the `qrdata.db` file in order to successfuly generate QR codes. This file contains a compressed and encoded version of all the various QR versions and specs required.
 
+Additionally, it now includes a full authentication system implementing most of the suggestions stated in the 'Warnings' section of this document.
+
 Due to the nature of how this class works, it *can* be used in an evironment with *no internet* access.
 
 ## Requirements
@@ -13,6 +15,13 @@ This was tested on PHP 5.6, while every effort was made to ensure backwards comp
 
 * SQLite3
 * GD/GD2
+* openssl
+
+For the full project (not just otp.class.php), you also need to have
+
+* MySQLi (nd)
+* Crypt
+
 
 ## Warnings
 
@@ -54,3 +63,17 @@ GenerateQRCode() - returns `array` [ *image* `string` { base64 encoded image str
 
 
 *Everything except GetTime() and ValidateCode() is inside the demo.php for a demonstration on how to use*
+
+## The dmeo project
+
+`otp_standalone_demo.php`
+
+This file is a demonstration on how to generate all the required parameters for creating an OTP qr-code, and displays all the values.
+
+
+`index.php`
+
+A full demonstration on how user authentication can be done with or without an OTP code using CSRF tokens and tracking of OTP code usage, while restricting attempts to a maximum amount and returning a generic error when login validation fails.
+
+This uses `password_hash()` for password storage in the database, and `password_verify()` to validate the password. To create the authentication database, you should run `install.php` after setting up the appropriate database credentials in the `config.inc.php` file.
+

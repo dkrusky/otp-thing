@@ -1,8 +1,9 @@
 <?php
+define('LIVE', true);
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-include('otp.class.php');
+include('lib/otp.class.php');
 
 // These are just used to format the table output to demonstrate the parameters for the QR code
 // it is not required for runtime.
