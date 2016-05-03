@@ -3,7 +3,7 @@ One time password generator, validator, and qrcode generator that has no web dep
 
 ## Introduction
 
-This started out as a straight drop-in class which you can still [download from here](https://github.com/microvb/otp-thing/tree/f4f10da122a4f83fdc97445ae67df812c5de3791), however it has been developed into a full admin/usercp system.
+This started out as a straight drop-in class which you can still [download from here](https://github.com/microvb/otp-thing/tree/f4f10da122a4f83fdc97445ae67df812c5de3791), however it has been developed into a full admin/usercp system using the [gentelella](https://github.com/puikinsh/gentelella) theme converted to [smarty 3](http://www.smarty.net/). The license for the theme is located inside `/templates/gentelella/LICENSE.TXT` and can be viewed [here](https://github.com/microvb/otp-thing/blob/master/app/templates/gentelella/LICENSE.txt). The method `otp::GenerateQRCode()` is based off code written in [QR code class library for PHP4 / 5 ver. 0.50beta14 (C)2002-2013,Y.Swetake](http://www.swetake.com/qrcode/php/qr_php.html) , and has been modified to output base64 encoded image as well as load data from the [included sqlite database](https://github.com/microvb/otp-thing/blob/master/app/lib/qrdata.db).
 
 ## Installation
 
