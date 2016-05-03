@@ -8,6 +8,9 @@ if(!defined('LIVE')) { exit(); };
 # Several functions are not supported.
 #
 # This class simplifies the creation of OTP qr codes and their keys
+#
+# The method GenerateQRCode() is based off code written in version 0.50beta14 (C)2002-2013,Y.Swetake , and has been
+# modified to output base64 encoded image as well as load data from the included sqlite database.
 */
 
 class otp {
