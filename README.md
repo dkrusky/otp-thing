@@ -3,77 +3,63 @@ One time password generator, validator, and qrcode generator that has no web dep
 
 ## Introduction
 
-OTP-Thing is a drop in class that makes it easy to implement 2FA with all the bells and whistles. The current implementation supports QR code generation from versions 1 to 40, as well as the various parity levels and quiet zone adjustments. This class is self-contained with the exception that it does require the `qrdata.db` file in order to successfuly generate QR codes. This file contains a compressed and encoded version of all the various QR versions and specs required.
+This started out as a straight drop-in class which you can still [download from here](https://github.com/microvb/otp-thing/tree/f4f10da122a4f83fdc97445ae67df812c5de3791), however it has been developed into a full admin/usercp system.
 
-Additionally, it now includes a full authentication system implementing most of the suggestions stated in the 'Warnings' section of this document.
+## Installation
 
-Due to the nature of how this class works, it *can* be used in an evironment with *no internet* access.
+Download the application, and set the appropriate values in `config.inc.php`, then run `/app/install` .  If everything passes, the database will be installed if it doesn't exist, and a new user `admin` withe the password `admin` will be created using ACL `9999` which should give plenty of access levels to play with for lower level users or admins.
 
-## Requirements
+Once installed, all users and administrators have access to add an authenticator to their account, and edit the following basic settings for their own account :  Name, Password, Email
 
-This was tested on PHP 5.6, while every effort was made to ensure backwards compatability, using an earlier version is not recommended.
+----
 
-* SQLite3
-* GD/GD2
-* openssl
+## Login
 
-For the full project (not just otp.class.php), you also need to have
+If an authenticator is not on the users account, the authenticator code field is disregarded. If any part of the credentials fail including if the authenticator code is invalid or not a valid scratch code, a generic message is displayed stating 'Invalid Credentials' so that no clue is given making it more difficult for an attacker to guess which part of the credential system was correct by messages such as 'Invalid Password'.
 
-* MySQLi (nd)
-* Crypt
+![image](https://cloud.githubusercontent.com/assets/11585632/14994589/a755599a-113e-11e6-9246-b93a921349af.png)
 
 
-## Warnings
+## Dashboard
+![image](https://cloud.githubusercontent.com/assets/11585632/14994153/4dccb7ee-113c-11e6-9a28-85c95598b441.png)
 
-If properly implemented, adding 2FA to your accounts can add a layer of protection, however if not implemented properly it can lead to disasterous results. It is therefore recommended that when using this to add levels of protection that care is taken during implementation. Following are some ideas to check :
+## Settings
+![image](https://cloud.githubusercontent.com/assets/11585632/14994184/7e61ab94-113c-11e6-87f7-787a362ba553.png)
 
-* Integrate the OTP box as part of the login process instead of on a separate form. Do not let attackers guess that an account they may have the credentials for is using a OTP token.
-* When any part of the login process fails, display a generic message to the user such as 'Invalid credentials supplied'. Do not give specific messages indicating that a specific part failed such as 'Invalid username' or 'Invalid code' as this assures the attacker of the portions they got correct.
-* Once a OTP code has been used on an account, prevent that code from being used again for at least 1 day.  This should happen prior to setting the login session as valid.
-* Always use CSRF tokens embedded in the page which can be regenerated fairly easily (will be releasing a login class project to demonstrate this). By Always, I do mean, Always. Not just the front end where the user logs in, but also after they are logged in on every page.
-* Where possible, bust out of all frames where X-Origin is not your site .
-* After X tries and failures, lock out access to the account for a specified period of time. 30 minute lockout after 5 attempts is not unreasonable. Keep in mind the more attempts you allow, and/or the shorter the lockout period is the more chances an attacker has to breach the account.
-* Do not store passwords insecurely. A good method to store passwords, is to sign them using a private key, and validate the signature using a public key. You do not need to store the password, only the signature.  The problem is, the stronger the encryption, the slower the process, so there is a trade-off between security, and speed.  The minimum should be a sha256 hash as this is a current balance between something that hasn't been breached (yet), and speed. (in my humble optinion)
- 
-There are plent of other things related to security when protecting your users data, however it is in your hands to do the research into everything required for your project. (if requested, I am not opposed to expanding this list while keeping it as generic as possible)
+## Authenticator
 
-## What is in the code ?
+If no authenticator is on the users account
 
-The file `otp.class.php` consists of 3 classes as follows:
+![image](https://cloud.githubusercontent.com/assets/11585632/14994430/f5bdf098-113d-11e6-9698-3e2fa02ce6ff.png)
 
-|class|purpose|
-|---|---|
-|otp|The main (static) class. This is the only class you will need to call.|
-|qrcodedb|This is a helper class for accessing the SQLite3 database.|
-|sread|This is a helper class for seeking data in a string in a similar fashion to `fread()`|
+![image](https://cloud.githubusercontent.com/assets/11585632/14994471/2610336e-113e-11e6-8ff3-e31a39ee9118.png)
 
-## Methods
+If an authenticator exists on the users account:
 
-GenerateSecret ( *user* `string` ) - returns `string` { random 16 base32 character string }
+![image](https://cloud.githubusercontent.com/assets/11585632/14994494/39c63106-113e-11e6-8922-1c434bec8f49.png)
 
-SetSecret ( *user* `string`, *secret* `string` )
+![image](https://cloud.githubusercontent.com/assets/11585632/14994536/677be3ac-113e-11e6-8b08-596046711c6a.png)
 
-GetTime() - returns `int` { current block of time }
+## Accounts : Add
+![image](https://cloud.githubusercontent.com/assets/11585632/14994212/9ff2c888-113c-11e6-8c55-812d6bea3a08.png)
 
-GetCode() - returns `array` [ *timeblock* `int` { current block of time }, *code* `string` { current valid code based on user and secret } ]
+## Accounts : Added
+![image](https://cloud.githubusercontent.com/assets/11585632/14994249/d4306d08-113c-11e6-8691-467c9b8739c6.png)
 
-ValidateCode( *code* `string` ) - returns `bool` { true if code is valid for current block of time, using the current secret }
+## Accounts : List
+![image](https://cloud.githubusercontent.com/assets/11585632/14994267/f01f4066-113c-11e6-86cb-fa71282d9037.png)
 
-GenerateQRCode() - returns `array` [ *image* `string` { base64 encoded image string prepared to set as the src value for an `<img>` html tag }, *url* `string` { the full otpauth url used in the qr code image }, *secret* `string` { the current secret used } ]
+## Notifications
 
+![image](https://cloud.githubusercontent.com/assets/11585632/14994382/a59141a6-113d-11e6-8564-3461afdd5f39.png)
 
-*Everything except GetTime() and ValidateCode() is inside the demo.php for a demonstration on how to use*
+![image](https://cloud.githubusercontent.com/assets/11585632/14994293/0f21ab3e-113d-11e6-912b-2fbfedfd2e2d.png)
 
-## The demo project
+## Generic Error Page handles
 
-`otp_standalone_demo.php`
+410 Gone instead of 404 for pages that do not have a valid modal. This script only checks for the physical existence of resource files (jpg, png, js, etc.) and denies any direct access to physical php/html/etc files. As you can see in the screenshot, if the physical resource file is missing, it will also trigger a 410 gone, showing the missing element and virtual path in the address bar. 
+![image](https://cloud.githubusercontent.com/assets/11585632/14994714/6650bbbe-113f-11e6-8e16-61263b335341.png)
 
-This file is a demonstration on how to generate all the required parameters for creating an OTP qr-code, and displays all the values.
-
-
-`index.php`
-
-A full demonstration on how user authentication can be done with or without an OTP code using CSRF tokens and tracking of OTP code usage, while restricting attempts to a maximum amount and returning a generic error when login validation fails.
-
-This uses `password_hash()` for password storage in the database, and `password_verify()` to validate the password. To create the authentication database, you should run `install.php` after setting up the appropriate database credentials in the `config.inc.php` file.
+400 error message for resources that the user does not have permission to access.
+![image](https://cloud.githubusercontent.com/assets/11585632/14994873/08bba396-1140-11e6-92a4-bd0cb0db14e9.png)
 
