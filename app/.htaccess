@@ -1,0 +1,8 @@
+Require all granted
+
+RewriteEngine On
+RewriteCond %{REQUEST_URI} !\.(jpg|png|bmp|gif|css|js|map|ttf|woff|woff2|svg|eot)$
+RewriteRule ^(.*)$ controller.php?page=$1 [NC,L,QSA]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ controller.php?page=error&rewritten=1&missing=$1 [NC,L,QSA]
