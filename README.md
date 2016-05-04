@@ -19,6 +19,111 @@ Download the application, and set the appropriate values in `config.inc.php`, th
 
 Once installed, all users and administrators have access to add an authenticator to their account, and edit the following basic settings for their own account :  Name, Password, Email
 
+## Requirements
+
+This was tested and runs well on the following detailed lists of all modules and extensions loaded for Apache and PHP. Many of the modules or extensions come pre-loaded but since this varies between distributions, I have included a more comprehensive list which you can tweak.
+
+#### Apache/2.4.10 
+
+* access_compat_module (shared)
+* actions_module (shared)
+* alias_module (shared)
+* auth_basic_module (shared)
+* authn_core_module (shared)
+* authn_file_module (shared)
+* authz_core_module (shared)
+* authz_host_module (shared)
+* authz_user_module (shared)
+* autoindex_module (shared)
+* core_module (static)
+* deflate_module (shared)
+* dir_module (shared)
+* env_module (shared)
+* fastcgi_module (shared)
+* filter_module (shared)
+* headers_module (shared)
+* http_module (static)
+
+Loaded Modules:
+* log_config_module (static)
+* logio_module (static)
+* mime_module (shared)
+* mpm_event_module (shared)
+* negotiation_module (shared)
+* rewrite_module (shared)
+* setenvif_module (shared)
+* socache_shmcb_module (shared)
+* so_module (static)
+* ssl_module (shared)
+* status_module (shared)
+* unixd_module (static)
+* version_module (static)
+* watchdog_module (static)
+
+#### PHP 5.6.17
+
+[PHP Modules]
+* bcmath
+* bz2
+* calendar
+* Core
+* ctype
+* date
+* dba
+* dom
+* ereg
+* exif
+* fileinfo
+* filter
+* ftp
+* gd
+* gettext
+* hash
+* iconv
+* json
+* libxml
+* mbstring
+* mhash
+* mysql
+* mysqli
+* mysqlnd
+* openssl
+* pcntl
+* pcre
+* PDO
+* pdo_mysql
+* pdo_sqlite
+* Phar
+* posix
+* readline
+* Reflection
+* session
+* shmop
+* SimpleXML
+* soap
+* sockets
+* SPL
+* sqlite3
+* standard
+* sysvmsg
+* sysvsem
+* sysvshm
+* tokenizer
+* wddx
+* xml
+* xmlreader
+* xmlwriter
+* Zend OPcache
+* zip
+* zlib
+
+[Zend Modules]
+* Zend OPcache
+
+#### MariaDB 10.0.23
+
+This should not matter too much which database platform you choose either MariaDB or MySQL, however you will need it compiled with mysqlnd (native driver) support as well as compiled into PHP.
+
 ----
 
 ## Login
