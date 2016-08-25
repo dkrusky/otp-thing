@@ -1,5 +1,19 @@
 <?php
 if(!defined('LIVE')) { exit(); };
+
+// ensure sessions are writeable
+if(!is_writable(session_save_path())) {
+	// try alternate session path
+	$_session_save_path = str_replace(DIRECTORY_SEPARATOR, '/', dirname(__FILE__) . DIRECTORY_SEPARATOR . 'cache');
+	if(!is_writable($_session_save_path)) {
+		echo "Can't write sessions"; exit;
+	} else {
+		session_save_path(
+			$_session_save_path
+		);
+	}
+}
+
 session::start();
 
 class session {
