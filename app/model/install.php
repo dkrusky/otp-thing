@@ -24,7 +24,7 @@ if(!file_exists('config.inc.php')) {
 		'SESSION_TIMEOUT'	=> Array('type' => 'int', 'min' => 0, 'max'=> 525600 ),
 		'SQL_SERVER'	=> Array('type' => 'string'),
 		'SQL_USERNAME'	=> Array('type' => 'string'),
-		'SQL_PASSWORD'	=> Array('type' => 'string'),
+		'SQL_PASSWORD'	=> Array('type' => 'string', 'optional' => true),
 		'SQL_DATA'	=> Array('type' => 'string'),
 		'SQL_PREFIX'	=> Array('type' => 'string', 'optional' => true),
 		'SMARTY_DEBUGGING'	=> Array('type' => 'bool'),
