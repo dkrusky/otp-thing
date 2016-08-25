@@ -8,8 +8,8 @@ if(!file_exists('config.inc.php')) {
 	require 'config.inc.php';
 
 	$installsql = Array(
-		"CREATE TABLE IF NOT EXIST `" . SQL_PREFIX . "users` ( `id` int(11) NOT NULL AUTO_INCREMENT, `username` varchar(255) NOT NULL, `password` varchar(255) NOT NULL, `enabled` int(1) NOT NULL DEFAULT '0' COMMENT '0 = disabled, 1 = enabled', `otp_key` varchar(32) DEFAULT '', `otp_last_time` int(11) NOT NULL DEFAULT '0', `otp_last_time_count` int(1) NOT NULL DEFAULT '0', `acl` int(11) NOT NULL DEFAULT '0', `name` varchar(255) DEFAULT NULL,`email` varchar(255) DEFAULT NULL, PRIMARY KEY (`id`) ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;",
-		"CREATE TABLE IF NOT EXIST `" . SQL_PREFIX . "notifications` ( `id` int(11) NOT NULL AUTO_INCREMENT, `username` varchar(255) NOT NULL, `name` varchar(255) DEFAULT NULL, `email` varchar(255) DEFAULT NULL, `message` varchar(255) NOT NULL, `time` datetime DEFAULT NULL, `read` int(11) NOT NULL DEFAULT '0', PRIMARY KEY (`id`) ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;",
+		"CREATE TABLE IF NOT EXISTS `" . SQL_PREFIX . "users` ( `id` int(11) NOT NULL AUTO_INCREMENT, `username` varchar(255) NOT NULL, `password` varchar(255) NOT NULL, `enabled` int(1) NOT NULL DEFAULT '0' COMMENT '0 = disabled, 1 = enabled', `otp_key` varchar(32) DEFAULT '', `otp_last_time` int(11) NOT NULL DEFAULT '0', `otp_last_time_count` int(1) NOT NULL DEFAULT '0', `acl` int(11) NOT NULL DEFAULT '0', `otp_scratch_codes` text, `name` varchar(255) DEFAULT NULL,`email` varchar(255) DEFAULT NULL, PRIMARY KEY (`id`) ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;",
+		"CREATE TABLE IF NOT EXISTS `" . SQL_PREFIX . "notifications` ( `id` int(11) NOT NULL AUTO_INCREMENT, `username` varchar(255) NOT NULL, `name` varchar(255) DEFAULT NULL, `email` varchar(255) DEFAULT NULL, `message` varchar(255) NOT NULL, `time` datetime DEFAULT NULL, `read` int(11) NOT NULL DEFAULT '0', PRIMARY KEY (`id`) ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;",
 		"INSERT INTO `" . SQL_PREFIX . "users` VALUES (null, 'admin', '" . password_hash('admin', PASSWORD_DEFAULT) . "', '1', null, '0', '0', 9999, null, null, null);"
 	);
 
