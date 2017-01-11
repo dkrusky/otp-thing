@@ -15,7 +15,7 @@ All other 3rd party libraries (jquery, jquery extensions, etc) and languages (ja
 
 ## Installation
 
-Download the application, and set the appropriate values in `config.inc.php`, then run `/app/install` .  If everything passes, the database will be installed if it doesn't exist, and a new user `admin` withe the password `admin` will be created using ACL `9999` which should give plenty of access levels to play with for lower level users or admins.
+Download the application, and set the appropriate values in `config.inc.php`, then run `/app/install` .  If everything passes, the database will be installed if it doesn't exist, and a new user `admin` with the the password `admin` will be created using ACL `9999` which should give plenty of access levels to play with for lower level users or admins.
 
 Once installed, all users and administrators have access to add an authenticator to their account, and edit the following basic settings for their own account :  Name, Password, Email
 
