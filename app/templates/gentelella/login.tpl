@@ -132,10 +132,10 @@
 							<h4>{$ERROR}</h4>
 							{/if}
 							<div>
-								<input type="text" name="username" class="form-control" placeholder="&#xf069; Username" required="">
+								<input type="text" name="username" class="form-control" placeholder="* Username" required="">
 							</div>
 							<div>
-								<input type="password" name="password" class="form-control" placeholder="&#xf069; Password" required="">
+								<input type="password" name="password" class="form-control" placeholder="* Password" required="">
 							</div>
 							<div>
 								<input type="password" name="code" class="form-control" placeholder="Authenticator Code">
