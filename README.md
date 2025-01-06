@@ -13,6 +13,8 @@ This started out as a straight drop-in class which you can still [download from 
 
 All other 3rd party libraries (jquery, jquery extensions, etc) and languages (javascript/ecma, css, etc) are under their respective licenses having attribution included in the respective file(s), or in the directory containing the file(s). Absense of said license does not mean that no license applies, but it is assumed the strongest license in this project would then apply where no other license is available. If a license file/attribution was not included and you believe this to be an error, please submit it as a bug report or pull request with any license details that may have been omitted.
 
+Contributing is not required, but if you find something feel free to submit a pull request.
+
 ## Installation
 
 Download the application, and set the appropriate values in `config.inc.php`, then run `/app/install` .  If everything passes, the database will be installed if it doesn't exist, and a new user `admin` with the the password `admin` will be created using ACL `9999` which should give plenty of access levels to play with for lower level users or admins.
